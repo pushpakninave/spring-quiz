@@ -20,4 +20,9 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     void updateQuestion(Integer id, String category, String question, String difficultyLevel, String option1,
             String option2, String option3, String option4, String rightAnswer);
 
+    @Query(
+        value = "SELECT * FROM (SELECT * FROM QUESTIONS Q WHERE Q.CATEGORY = :category ORDER BY DBMS_RANDOM.VALUE()) WHERE ROWNUM<=:numQue",
+        nativeQuery = true
+    )
+    List<Question> findRandomQuestionsByCategory(String category, Integer numQue);
 }
